@@ -73,11 +73,11 @@
 
     <h2 id="popupTitle" class="text-2xl mb-4 text-green-400"></h2>
 
-    <!-- NEW QR IMAGE -->
+    <!-- QR -->
     <p class="mb-2 text-sm text-gray-400">Scan to Pay</p>
     <img src="https://i.imgur.com/5gkGWcJ.jpeg" class="mx-auto rounded-2xl mb-4 w-44 shadow-lg">
 
-    <!-- INPUT -->
+    <!-- INPUTS -->
     <div class="flex flex-col space-y-4 text-left">
       <input type="text" id="esewaNumber" placeholder="Your eSewa Number" class="p-2 rounded-xl bg-gray-800" oninput="checkInputs()">
       <input type="text" id="esewaName" placeholder="eSewa Name" class="p-2 rounded-xl bg-gray-800" oninput="checkInputs()">
@@ -92,12 +92,20 @@
     <!-- BUTTONS -->
     <div class="flex space-x-2 mt-4">
       <button onclick="closePopup()" class="flex-1 bg-red-500 py-2 rounded-xl">Close</button>
-      <button id="confirmBtn" onclick="confirmInfo()" class="flex-1 bg-green-500 py-2 rounded-xl" disabled>Confirm</button>
+
+      <!-- FIXED CONFIRM BUTTON -->
+      <button id="confirmBtn"
+        onclick="confirmInfo()"
+        class="flex-1 py-2 rounded-xl bg-gray-600 text-white cursor-not-allowed transition-all duration-300"
+        disabled>
+        Confirm
+      </button>
     </div>
 
   </div>
 </div>
 
+<!-- Glow -->
 <style>
 @keyframes glow {
   0% { box-shadow: 0 0 5px #22c55e; }
@@ -127,10 +135,12 @@ function checkInputs() {
 
   if (n && name && email) {
     btn.disabled = false;
-    btn.classList.add("confirm-active");
+    btn.classList.remove("bg-gray-600", "cursor-not-allowed");
+    btn.classList.add("bg-green-500", "confirm-active", "cursor-pointer");
   } else {
     btn.disabled = true;
-    btn.classList.remove("confirm-active");
+    btn.classList.remove("bg-green-500", "confirm-active", "cursor-pointer");
+    btn.classList.add("bg-gray-600", "cursor-not-allowed");
   }
 }
 
