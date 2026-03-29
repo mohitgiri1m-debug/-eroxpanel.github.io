@@ -78,8 +78,12 @@
     <img src="https://i.imgur.com/5gkGWcJ.jpeg" class="mx-auto rounded-2xl mb-4 w-44 shadow-lg">
 
     <!-- INPUTS -->
-    <div class="flex flex-col space-y-4 text-left">
+    <div class="flex flex-col space-y-2 text-left">
       <input type="text" id="esewaNumber" placeholder="Your eSewa Number" class="p-2 rounded-xl bg-gray-800" oninput="checkInputs()">
+      
+      <!-- ERROR MESSAGE -->
+      <p id="numberError" class="text-red-500 text-xs hidden">Number must be exactly 10 digits</p>
+
       <input type="text" id="esewaName" placeholder="eSewa Name" class="p-2 rounded-xl bg-gray-800" oninput="checkInputs()">
       <input type="email" id="email" placeholder="Email Address" class="p-2 rounded-xl bg-gray-800" oninput="checkInputs()">
     </div>
@@ -93,7 +97,6 @@
     <div class="flex space-x-2 mt-4">
       <button onclick="closePopup()" class="flex-1 bg-red-500 py-2 rounded-xl">Close</button>
 
-      <!-- FIXED CONFIRM BUTTON -->
       <button id="confirmBtn"
         onclick="confirmInfo()"
         class="flex-1 py-2 rounded-xl bg-gray-600 text-white cursor-not-allowed transition-all duration-300"
@@ -132,8 +135,17 @@ function checkInputs() {
   const name = document.getElementById("esewaName").value.trim();
   const email = document.getElementById("email").value.trim();
   const btn = document.getElementById("confirmBtn");
+  const error = document.getElementById("numberError");
 
-  if (n && name && email) {
+  const isValidNumber = /^\d{10}$/.test(n);
+
+  if (!isValidNumber && n.length > 0) {
+    error.classList.remove("hidden");
+  } else {
+    error.classList.add("hidden");
+  }
+
+  if (isValidNumber && name && email) {
     btn.disabled = false;
     btn.classList.remove("bg-gray-600", "cursor-not-allowed");
     btn.classList.add("bg-green-500", "confirm-active", "cursor-pointer");
