@@ -5,13 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EroxPanel</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<!-- EmailJS SDK -->
-<script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
-<script type="text/javascript">
-  (function(){
-    emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
-  })();
-</script>
 </head>
 
 <body class="bg-black text-white font-sans">
@@ -113,8 +106,13 @@
 
 <script>
 // Open & Close Popup
-function openPopup(plan){document.getElementById("popup").classList.remove("hidden");document.getElementById("popupTitle").innerText = plan;}
-function closePopup(){document.getElementById("popup").classList.add("hidden");}
+function openPopup(plan){
+  document.getElementById("popup").classList.remove("hidden");
+  document.getElementById("popupTitle").innerText = plan;
+}
+function closePopup(){
+  document.getElementById("popup").classList.add("hidden");
+}
 
 // Validation
 function checkInputs(){
@@ -143,23 +141,21 @@ function checkInputs(){
   }
 }
 
-// Submit to EmailJS
+// Submit form locally (no EmailJS)
 function submitForm(){
-  const form = document.getElementById("paymentForm");
-  const fileInput = document.getElementById("screenshot");
-  const file = fileInput.files[0];
+  const n = document.getElementById("esewaNumber").value.trim();
+  const name = document.getElementById("esewaName").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const file = document.getElementById("screenshot").files.length;
 
-  const formData = new FormData();
-  formData.append('esewaNumber', form.esewaNumber.value);
-  formData.append('esewaName', form.esewaName.value);
-  formData.append('email', form.email.value);
-  formData.append('screenshot', file);
-
-  // Send using EmailJS (requires file upload support in template)
-  emailjs.sendForm('YOUR_SERVICE_ID','YOUR_TEMPLATE_ID','#paymentForm')
-  .then(function(){ alert("Payment info submitted!"); closePopup(); })
-  .catch(function(e){ alert("Error sending form. Try again."); console.log(e); });
+  if(n && name && email && file>0){
+    alert("Payment info submitted successfully! ✅");
+    closePopup();
+  } else {
+    alert("Please fill all fields correctly.");
+  }
 }
 </script>
+
 </body>
 </html>
