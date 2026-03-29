@@ -73,10 +73,11 @@
   </div>
 </section>
 
-<!-- Footer with FB & TikTok links -->
+<!-- Footer -->
 <footer class="text-center p-6 border-t border-gray-800">
   <p class="mb-2">© 2026 EroxPanel. All rights reserved.</p>
   <div class="flex justify-center space-x-6">
+    
     <!-- Facebook -->
     <a href="https://www.facebook.com/EroxPanel" target="_blank" class="flex items-center text-blue-500 hover:underline">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="currentColor" viewBox="0 0 24 24">
@@ -84,6 +85,7 @@
       </svg>
       Facebook
     </a>
+
     <!-- TikTok -->
     <a href="https://www.tiktok.com/@mikey_ffx2?_r=1&_t=ZS-955LVYkdCLZ" target="_blank" class="flex items-center text-pink-500 hover:underline">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="currentColor" viewBox="0 0 24 24">
@@ -91,46 +93,52 @@
       </svg>
       TikTok
     </a>
+
   </div>
 </footer>
 
 <!-- POPUP -->
 <div id="popup" class="fixed inset-0 bg-black bg-opacity-80 hidden flex items-center justify-center">
   <div class="bg-gray-900 p-6 rounded-2xl text-center w-80">
+    
     <h2 id="popupTitle" class="text-2xl mb-4 text-green-400"></h2>
 
-    <img src="qr.png" class="mx-auto rounded-xl mb-4">
+    <!-- QR IMAGE -->
+    <p class="mb-2 text-sm text-gray-400">Scan to Pay</p>
+    <img src="https://i.imgur.com/mkjxOwr.png" class="mx-auto rounded-2xl mb-4 w-44 shadow-lg">
 
+    <!-- INPUTS -->
     <div class="flex flex-col space-y-4 text-left">
-      <label class="flex flex-col w-full">
-        <span class="text-gray-300 mb-1">Your eSewa Number</span>
-        <input type="text" id="esewaNumber" placeholder="Enter your number" class="w-full p-2 rounded-xl bg-gray-800 text-white" oninput="checkInputs()">
+      <label>
+        <span>Your eSewa Number</span>
+        <input type="text" id="esewaNumber" class="w-full p-2 rounded-xl bg-gray-800 mt-1" oninput="checkInputs()">
       </label>
 
-      <label class="flex flex-col w-full">
-        <span class="text-gray-300 mb-1">eSewa Name</span>
-        <input type="text" id="esewaName" placeholder="Enter your name" class="w-full p-2 rounded-xl bg-gray-800 text-white" oninput="checkInputs()">
+      <label>
+        <span>eSewa Name</span>
+        <input type="text" id="esewaName" class="w-full p-2 rounded-xl bg-gray-800 mt-1" oninput="checkInputs()">
       </label>
 
-      <label class="flex flex-col w-full">
-        <span class="text-gray-300 mb-1">Email Address</span>
-        <input type="email" id="email" placeholder="Enter your email" class="w-full p-2 rounded-xl bg-gray-800 text-white" oninput="checkInputs()">
+      <label>
+        <span>Email Address</span>
+        <input type="email" id="email" class="w-full p-2 rounded-xl bg-gray-800 mt-1" oninput="checkInputs()">
       </label>
     </div>
 
+    <!-- WARNING -->
     <p class="text-red-500 text-sm mt-4">
-      ⚠️ Please send the <strong>exact payment amount</strong>. If you send less, you will not receive the service and the money <strong>cannot be refunded</strong>.
+      ⚠️ Send exact amount. If not, no service & no refund.
     </p>
 
-    <!-- Buttons -->
+    <!-- BUTTONS -->
     <div class="flex space-x-2 mt-4">
-      <button onclick="closePopup()" class="flex-1 bg-red-500 px-4 py-2 rounded-xl">Close</button>
-      <button id="confirmBtn" onclick="confirmInfo()" class="flex-1 px-4 py-2 rounded-xl bg-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300">Confirm</button>
+      <button onclick="closePopup()" class="flex-1 bg-red-500 py-2 rounded-xl">Close</button>
+      <button id="confirmBtn" onclick="confirmInfo()" class="flex-1 bg-green-500 py-2 rounded-xl" disabled>Confirm</button>
     </div>
+
   </div>
 </div>
 
-<!-- Glow animation for Confirm -->
 <style>
 @keyframes glow {
   0% { box-shadow: 0 0 5px #22c55e; }
@@ -146,41 +154,29 @@
 function openPopup(plan) {
   document.getElementById("popup").classList.remove("hidden");
   document.getElementById("popupTitle").innerText = plan;
-  document.getElementById("confirmBtn").disabled = true;
-  document.getElementById("confirmBtn").classList.remove('confirm-active');
 }
 
 function closePopup() {
   document.getElementById("popup").classList.add("hidden");
-  document.getElementById("esewaNumber").value = '';
-  document.getElementById("esewaName").value = '';
-  document.getElementById("email").value = '';
-  const confirmBtn = document.getElementById("confirmBtn");
-  confirmBtn.disabled = true;
-  confirmBtn.classList.remove('confirm-active');
 }
 
 function checkInputs() {
-  const number = document.getElementById("esewaNumber").value.trim();
+  const n = document.getElementById("esewaNumber").value.trim();
   const name = document.getElementById("esewaName").value.trim();
   const email = document.getElementById("email").value.trim();
-  const confirmBtn = document.getElementById("confirmBtn");
+  const btn = document.getElementById("confirmBtn");
 
-  if (number && name && email) {
-    confirmBtn.disabled = false;
-    confirmBtn.classList.add('confirm-active');
+  if (n && name && email) {
+    btn.disabled = false;
+    btn.classList.add("confirm-active");
   } else {
-    confirmBtn.disabled = true;
-    confirmBtn.classList.remove('confirm-active');
+    btn.disabled = true;
+    btn.classList.remove("confirm-active");
   }
 }
 
 function confirmInfo() {
-  const number = document.getElementById("esewaNumber").value.trim();
-  const name = document.getElementById("esewaName").value.trim();
-  const email = document.getElementById("email").value.trim();
-
-  alert(`Thank you!\n\nYour Info:\nNumber: ${number}\nName: ${name}\nEmail: ${email}`);
+  alert("Payment info submitted!");
   closePopup();
 }
 </script>
