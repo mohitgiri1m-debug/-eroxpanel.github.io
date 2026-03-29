@@ -80,12 +80,12 @@
     <!-- INPUTS -->
     <div class="flex flex-col space-y-2 text-left">
       <input type="text" id="esewaNumber" placeholder="Your eSewa Number" class="p-2 rounded-xl bg-gray-800" oninput="checkInputs()">
-      
-      <!-- ERROR MESSAGE -->
-      <p id="numberError" class="text-red-500 text-xs hidden">Number must be exactly 10 digits</p>
+      <p id="numberError" class="text-red-500 text-xs hidden">Number must start with 98, 97, or 96 and be 10 digits</p>
 
       <input type="text" id="esewaName" placeholder="eSewa Name" class="p-2 rounded-xl bg-gray-800" oninput="checkInputs()">
+
       <input type="email" id="email" placeholder="Email Address" class="p-2 rounded-xl bg-gray-800" oninput="checkInputs()">
+      <p id="emailError" class="text-red-500 text-xs hidden">Email must end with @gmail.com</p>
     </div>
 
     <!-- WARNING -->
@@ -108,7 +108,6 @@
   </div>
 </div>
 
-<!-- Glow -->
 <style>
 @keyframes glow {
   0% { box-shadow: 0 0 5px #22c55e; }
@@ -135,17 +134,27 @@ function checkInputs() {
   const name = document.getElementById("esewaName").value.trim();
   const email = document.getElementById("email").value.trim();
   const btn = document.getElementById("confirmBtn");
-  const error = document.getElementById("numberError");
+  const numberError = document.getElementById("numberError");
+  const emailError = document.getElementById("emailError");
 
-  const isValidNumber = /^\d{10}$/.test(n);
+  // Nepal number validation: 98, 97, 96 + 10 digits
+  const isValidNumber = /^(98|97|96)\d{8}$/.test(n);
 
   if (!isValidNumber && n.length > 0) {
-    error.classList.remove("hidden");
+    numberError.classList.remove("hidden");
   } else {
-    error.classList.add("hidden");
+    numberError.classList.add("hidden");
   }
 
-  if (isValidNumber && name && email) {
+  // Email must end with @gmail.com
+  const isValidEmail = /@gmail\.com$/.test(email);
+  if (!isValidEmail && email.length > 0) {
+    emailError.classList.remove("hidden");
+  } else {
+    emailError.classList.add("hidden");
+  }
+
+  if (isValidNumber && name && isValidEmail) {
     btn.disabled = false;
     btn.classList.remove("bg-gray-600", "cursor-not-allowed");
     btn.classList.add("bg-green-500", "confirm-active", "cursor-pointer");
