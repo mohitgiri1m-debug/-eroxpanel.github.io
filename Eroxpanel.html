@@ -90,17 +90,17 @@
     <div class="flex flex-col space-y-4 text-left">
       <label class="flex flex-col w-full">
         <span class="text-gray-300 mb-1">Your eSewa Number</span>
-        <input type="text" placeholder="Enter your number" class="w-full p-2 rounded-xl bg-gray-800 text-white">
+        <input type="text" id="esewaNumber" placeholder="Enter your number" class="w-full p-2 rounded-xl bg-gray-800 text-white" oninput="checkInputs()">
       </label>
 
       <label class="flex flex-col w-full">
         <span class="text-gray-300 mb-1">eSewa Name</span>
-        <input type="text" placeholder="Enter your name" class="w-full p-2 rounded-xl bg-gray-800 text-white">
+        <input type="text" id="esewaName" placeholder="Enter your name" class="w-full p-2 rounded-xl bg-gray-800 text-white" oninput="checkInputs()">
       </label>
 
       <label class="flex flex-col w-full">
         <span class="text-gray-300 mb-1">Email Address</span>
-        <input type="email" placeholder="Enter your email" class="w-full p-2 rounded-xl bg-gray-800 text-white">
+        <input type="email" id="email" placeholder="Enter your email" class="w-full p-2 rounded-xl bg-gray-800 text-white" oninput="checkInputs()">
       </label>
     </div>
 
@@ -109,7 +109,11 @@
       ⚠️ Please send the <strong>exact payment amount</strong>. If you send less, you will not receive the service and the money <strong>cannot be refunded</strong>.
     </p>
 
-    <button onclick="closePopup()" class="mt-4 bg-red-500 px-4 py-2 rounded-xl w-full">Close</button>
+    <!-- BUTTONS SIDE BY SIDE -->
+    <div class="flex space-x-2 mt-4">
+      <button id="confirmBtn" onclick="confirmInfo()" class="flex-1 bg-green-500 px-4 py-2 rounded-xl disabled:opacity-50" disabled>Confirm</button>
+      <button onclick="closePopup()" class="flex-1 bg-red-500 px-4 py-2 rounded-xl">Close</button>
+    </div>
   </div>
 </div>
 
@@ -118,10 +122,33 @@
 function openPopup(plan) {
   document.getElementById("popup").classList.remove("hidden");
   document.getElementById("popupTitle").innerText = plan;
+  document.getElementById("confirmBtn").disabled = true;
 }
 
 function closePopup() {
   document.getElementById("popup").classList.add("hidden");
+  document.getElementById("esewaNumber").value = '';
+  document.getElementById("esewaName").value = '';
+  document.getElementById("email").value = '';
+  document.getElementById("confirmBtn").disabled = true;
+}
+
+// Enable confirm button only if all inputs are filled
+function checkInputs() {
+  const number = document.getElementById("esewaNumber").value.trim();
+  const name = document.getElementById("esewaName").value.trim();
+  const email = document.getElementById("email").value.trim();
+  document.getElementById("confirmBtn").disabled = !(number && name && email);
+}
+
+// Confirm button click
+function confirmInfo() {
+  const number = document.getElementById("esewaNumber").value.trim();
+  const name = document.getElementById("esewaName").value.trim();
+  const email = document.getElementById("email").value.trim();
+
+  alert(`Thank you!\n\nYour Info:\nNumber: ${number}\nName: ${name}\nEmail: ${email}`);
+  closePopup();
 }
 </script>
 
