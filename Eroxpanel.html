@@ -1,10 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EroxPanel</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EroxPanel</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- EmailJS SDK -->
+<script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script type="text/javascript">
+  (function(){
+    emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
+  })();
+</script>
 </head>
 
 <body class="bg-black text-white font-sans">
@@ -22,39 +29,25 @@
   <a href="#pricing" class="bg-green-500 px-6 py-3 rounded-xl text-lg">Get Started</a>
 </section>
 
-<!-- Features -->
-<section class="py-16 px-6">
-  <h2 class="text-3xl text-center mb-10">Features</h2>
-  <div class="grid md:grid-cols-3 gap-6">
-    <div class="bg-gray-900 p-6 rounded-2xl">⚡ Fast Performance</div>
-    <div class="bg-gray-900 p-6 rounded-2xl">🔒 Secure System</div>
-    <div class="bg-gray-900 p-6 rounded-2xl">🎮 Easy to Use</div>
-  </div>
-</section>
-
 <!-- Pricing -->
 <section id="pricing" class="py-16 px-6">
   <h2 class="text-3xl text-center mb-10">Price & validity</h2>
   <div class="grid md:grid-cols-3 gap-6 text-center">
-
     <div class="bg-gray-900 p-6 rounded-2xl">
       <h3 class="text-xl mb-2">15 Days</h3>
       <p class="text-2xl font-bold">Rs 500</p>
       <button onclick="openPopup('15 Days Plan')" class="mt-4 bg-green-500 px-4 py-2 rounded-xl">Buy</button>
     </div>
-
     <div class="bg-gray-900 p-6 rounded-2xl">
       <h3 class="text-xl mb-2">30 Days</h3>
       <p class="text-2xl font-bold">Rs 900</p>
       <button onclick="openPopup('30 Days Plan')" class="mt-4 bg-green-500 px-4 py-2 rounded-xl">Buy</button>
     </div>
-
     <div class="bg-gray-900 p-6 rounded-2xl">
       <h3 class="text-xl mb-2">Permanent</h3>
       <p class="text-2xl font-bold">Rs 1400</p>
       <button onclick="openPopup('Permanent')" class="mt-4 bg-green-500 px-4 py-2 rounded-xl">Buy</button>
     </div>
-
   </div>
 </section>
 
@@ -70,25 +63,25 @@
 <!-- POPUP -->
 <div id="popup" class="fixed inset-0 bg-black bg-opacity-80 hidden flex items-center justify-center">
   <div class="bg-gray-900 p-6 rounded-2xl text-center w-80">
-
     <h2 id="popupTitle" class="text-2xl mb-4 text-green-400"></h2>
 
-    <!-- QR -->
     <p class="mb-2 text-sm text-gray-400">Scan to Pay</p>
     <img src="https://i.imgur.com/5gkGWcJ.jpeg" class="mx-auto rounded-2xl mb-4 w-44 shadow-lg">
 
-    <!-- INPUTS -->
-    <div class="flex flex-col space-y-2 text-left">
-      <input type="text" id="esewaNumber" placeholder="Your eSewa Number" class="p-2 rounded-xl bg-gray-800" oninput="checkInputs()">
+    <!-- FORM -->
+    <form id="paymentForm" class="flex flex-col space-y-2 text-left" oninput="checkInputs();">
+      <input type="text" id="esewaNumber" name="esewaNumber" placeholder="Your eSewa Number" class="p-2 rounded-xl bg-gray-800">
       <p id="numberError" class="text-red-500 text-xs hidden">Number must start with 98, 97, or 96 and be 10 digits</p>
 
-      <input type="text" id="esewaName" placeholder="eSewa Name" class="p-2 rounded-xl bg-gray-800" oninput="checkInputs()">
+      <input type="text" id="esewaName" name="esewaName" placeholder="eSewa Name" class="p-2 rounded-xl bg-gray-800">
 
-      <input type="email" id="email" placeholder="Email Address" class="p-2 rounded-xl bg-gray-800" oninput="checkInputs()">
+      <input type="email" id="email" name="email" placeholder="Email Address" class="p-2 rounded-xl bg-gray-800">
       <p id="emailError" class="text-red-500 text-xs hidden">Email must end with @gmail.com</p>
-    </div>
 
-    <!-- WARNING -->
+      <label class="text-gray-400 mt-2">Upload Payment Screenshot</label>
+      <input type="file" id="screenshot" name="screenshot" accept="image/*" class="p-2 rounded-xl bg-gray-800" onchange="checkInputs();">
+    </form>
+
     <p class="text-red-500 text-sm mt-4">
       ⚠️ Send exact amount or no service & no refund.
     </p>
@@ -98,13 +91,12 @@
       <button onclick="closePopup()" class="flex-1 bg-red-500 py-2 rounded-xl">Close</button>
 
       <button id="confirmBtn"
-        onclick="confirmInfo()"
+        onclick="submitForm()"
         class="flex-1 py-2 rounded-xl bg-gray-600 text-white cursor-not-allowed transition-all duration-300"
         disabled>
         Confirm
       </button>
     </div>
-
   </div>
 </div>
 
@@ -120,56 +112,54 @@
 </style>
 
 <script>
-function openPopup(plan) {
-  document.getElementById("popup").classList.remove("hidden");
-  document.getElementById("popupTitle").innerText = plan;
-}
+// Open & Close Popup
+function openPopup(plan){document.getElementById("popup").classList.remove("hidden");document.getElementById("popupTitle").innerText = plan;}
+function closePopup(){document.getElementById("popup").classList.add("hidden");}
 
-function closePopup() {
-  document.getElementById("popup").classList.add("hidden");
-}
-
-function checkInputs() {
+// Validation
+function checkInputs(){
   const n = document.getElementById("esewaNumber").value.trim();
   const name = document.getElementById("esewaName").value.trim();
   const email = document.getElementById("email").value.trim();
+  const file = document.getElementById("screenshot").files.length;
   const btn = document.getElementById("confirmBtn");
   const numberError = document.getElementById("numberError");
   const emailError = document.getElementById("emailError");
 
-  // Nepal number validation: 98, 97, 96 + 10 digits
   const isValidNumber = /^(98|97|96)\d{8}$/.test(n);
+  if(!isValidNumber && n.length>0){numberError.classList.remove("hidden");}else{numberError.classList.add("hidden");}
 
-  if (!isValidNumber && n.length > 0) {
-    numberError.classList.remove("hidden");
-  } else {
-    numberError.classList.add("hidden");
-  }
-
-  // Email must end with @gmail.com
   const isValidEmail = /@gmail\.com$/.test(email);
-  if (!isValidEmail && email.length > 0) {
-    emailError.classList.remove("hidden");
-  } else {
-    emailError.classList.add("hidden");
-  }
+  if(!isValidEmail && email.length>0){emailError.classList.remove("hidden");}else{emailError.classList.add("hidden");}
 
-  if (isValidNumber && name && isValidEmail) {
-    btn.disabled = false;
-    btn.classList.remove("bg-gray-600", "cursor-not-allowed");
-    btn.classList.add("bg-green-500", "confirm-active", "cursor-pointer");
-  } else {
-    btn.disabled = true;
-    btn.classList.remove("bg-green-500", "confirm-active", "cursor-pointer");
-    btn.classList.add("bg-gray-600", "cursor-not-allowed");
+  if(isValidNumber && name && isValidEmail && file>0){
+    btn.disabled=false;
+    btn.classList.remove("bg-gray-600","cursor-not-allowed");
+    btn.classList.add("bg-green-500","confirm-active","cursor-pointer");
+  }else{
+    btn.disabled=true;
+    btn.classList.remove("bg-green-500","confirm-active","cursor-pointer");
+    btn.classList.add("bg-gray-600","cursor-not-allowed");
   }
 }
 
-function confirmInfo() {
-  alert("Payment info submitted!");
-  closePopup();
+// Submit to EmailJS
+function submitForm(){
+  const form = document.getElementById("paymentForm");
+  const fileInput = document.getElementById("screenshot");
+  const file = fileInput.files[0];
+
+  const formData = new FormData();
+  formData.append('esewaNumber', form.esewaNumber.value);
+  formData.append('esewaName', form.esewaName.value);
+  formData.append('email', form.email.value);
+  formData.append('screenshot', file);
+
+  // Send using EmailJS (requires file upload support in template)
+  emailjs.sendForm('YOUR_SERVICE_ID','YOUR_TEMPLATE_ID','#paymentForm')
+  .then(function(){ alert("Payment info submitted!"); closePopup(); })
+  .catch(function(e){ alert("Error sending form. Try again."); console.log(e); });
 }
 </script>
-
 </body>
 </html>
