@@ -22,11 +22,10 @@
   <a href="#pricing" class="bg-green-500 px-6 py-3 rounded-xl text-lg">Get Started</a>
 </section>
   
-<p>
+<p class="px-6">
   <span class="text-cyan-400 font-bold">Erox Panel</span> is the #1 mobile panel designed specifically for CS mode and BR mode rank push. Our professional rank push panel combines advanced performance optimization, tactical enhancements, pattern stabilization, and connection improvements to help you reach Grandmaster rank faster than manual gameplay.
 </p>
 
-  
 <!-- Features -->
 <section class="py-16 px-6">
   <h2 class="text-3xl text-center mb-10">Features</h2>
@@ -36,7 +35,6 @@
     <div class="bg-gray-900 p-6 rounded-2xl">🎮 Easy to Use</div>
   </div>
 </section>
-
 
 <!-- Pricing -->
 <section id="pricing" class="py-16 px-6">
@@ -60,6 +58,16 @@
   </div>
 </section>
 
+<!-- Contact Us -->
+<section class="py-16 px-6 text-center">
+  <h2 class="text-3xl mb-6">Contact Us</h2>
+  <p class="text-gray-400 mb-4">Reach out to us on our social platforms:</p>
+  <div class="flex justify-center space-x-6">
+    <a href="https://www.facebook.com/EroxPanel" target="_blank" class="text-blue-500 font-bold text-lg">Facebook</a>
+    <a href="https://www.tiktok.com/@mikey_ffx2?_r=1&_t=ZS-955LVYkdCLZ" target="_blank" class="text-pink-500 font-bold text-lg">TikTok</a>
+  </div>
+</section>
+
 <!-- Footer -->
 <footer class="text-center p-6 border-t border-gray-800">
   <p class="mb-2">© 2026 EroxPanel. All rights reserved.</p>
@@ -73,20 +81,16 @@
 <div id="popup" class="fixed inset-0 bg-black bg-opacity-80 hidden flex items-center justify-center">
   <div class="bg-gray-900 p-6 rounded-2xl text-center w-80">
     <h2 id="popupTitle" class="text-2xl mb-4 text-green-400"></h2>
-
     <p class="mb-2 text-sm text-gray-400">Scan to Pay</p>
     <img src="https://i.imgur.com/5gkGWcJ.jpeg" class="mx-auto rounded-2xl mb-4 w-44 shadow-lg">
-
+    
     <!-- FORM -->
     <form id="paymentForm" class="flex flex-col space-y-2 text-left" oninput="checkInputs();">
       <input type="text" id="esewaNumber" name="esewaNumber" placeholder="Your eSewa Number" class="p-2 rounded-xl bg-gray-800">
       <p id="numberError" class="text-red-500 text-xs hidden">Number must start with 98, 97, or 96 and be 10 digits</p>
-
       <input type="text" id="esewaName" name="esewaName" placeholder="eSewa Name" class="p-2 rounded-xl bg-gray-800">
-
       <input type="email" id="email" name="email" placeholder="Email Address" class="p-2 rounded-xl bg-gray-800">
       <p id="emailError" class="text-red-500 text-xs hidden">Email must end with @gmail.com</p>
-
       <label class="text-gray-400 mt-2">Upload Payment Screenshot</label>
       <input type="file" id="screenshot" name="screenshot" accept="image/*" class="p-2 rounded-xl bg-gray-800" onchange="checkInputs();">
     </form>
@@ -98,11 +102,7 @@
     <!-- BUTTONS -->
     <div class="flex space-x-2 mt-4">
       <button onclick="closePopup()" class="flex-1 bg-red-500 py-2 rounded-xl">Close</button>
-
-      <button id="confirmBtn"
-        onclick="submitForm()"
-        class="flex-1 py-2 rounded-xl bg-gray-600 text-white cursor-not-allowed transition-all duration-300"
-        disabled>
+      <button id="confirmBtn" onclick="submitForm()" class="flex-1 py-2 rounded-xl bg-gray-600 text-white cursor-not-allowed transition-all duration-300" disabled>
         Confirm
       </button>
     </div>
